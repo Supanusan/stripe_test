@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-import { Order } from "../models/shema/order";
+import { Order } from "../models/shema/order.js";
 
 export const handleWebhook = async (req, res) => {
   const sig = req.headers["stripe-signature"];
