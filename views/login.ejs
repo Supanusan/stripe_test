@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | MyApp</title>
+
+    <!-- DaisyUI + Tailwind -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="min-h-screen flex items-center justify-center bg-base-200">
+    <div class="card w-96 shadow-xl bg-base-100">
+      <div class="card-body">
+        <h2 class="card-title text-center">Login</h2>
+
+        <!-- Login Form -->
+        <form
+          action="/api/auth/login"
+          method="POST"
+          class="form-control space-y-4">
+          <!-- Email -->
+          <label class="input input-bordered flex items-center gap-2">
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              class="grow"
+              required />
+          </label>
+
+          <!-- Password -->
+          <label class="input input-bordered flex items-center gap-2">
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              class="grow"
+              required />
+          </label>
+
+          <!-- Submit -->
+          <button class="btn btn-primary w-full">Login</button>
+        </form>
+
+        <!-- Extra Links -->
+        <p class="text-center text-sm mt-4">
+          Don’t have an account?
+          <a href="/api/auth/register" class="link link-primary">Register</a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

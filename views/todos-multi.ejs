@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload Multiple Images</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {},
+        },
+      };
+    </script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@3.9.1/dist/full.css"
+      rel="stylesheet" />
+  </head>
+  <body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="card w-full max-w-md shadow-xl bg-white p-6 rounded-2xl">
+      <h1 class="text-2xl font-bold text-center mb-6">
+        Upload Multiple Images
+      </h1>
+      <form
+        action="/api/todos/add-multiple"
+        method="post"
+        enctype="multipart/form-data"
+        class="flex flex-col gap-4">
+        <input
+          type="file"
+          name="images"
+          multiple
+          accept="image/*"
+          onchange="if(this.files.length>5){alert('You can upload max 5 files'); this.value='';}" />
+
+        <p class="text-sm text-gray-500">
+          You can upload up to 5 images at a time.
+        </p>
+        <button
+          type="submit"
+          class="btn btn-primary w-full mt-2 hover:scale-105 transition-all">
+          Upload
+        </button>
+      </form>
+    </div>
+  </body>
+</html>
