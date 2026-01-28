@@ -36,7 +36,7 @@ router.get("/products/:id", async (req, res) => {
 
 //Add to the order
 router.post(
-  "/user/order",
+  "/new_order",
   authMiddleware,
   [
     // Validate items array
