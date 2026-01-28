@@ -1,12 +1,13 @@
-import Stripe from "stripe";
+import stripe from "../config/stripe.js";
 import { Order } from "../models/shema/order.js";
+import { successResponse } from "../utils/responseHelper.js";
 
 export const handleWebhook = async (req, res) => {
   const sig = req.headers["stripe-signature"];
   let event;
 
   try {
-    event = Stripe.webhooks.constructEvent(
+    event = stripe.webhooks.constructEvent(
       req.body,
       sig,
       process.env.STRIPE_WEBHOOK_SECRET,
@@ -35,12 +36,21 @@ export const handleWebhook = async (req, res) => {
           province: session.metadata.shippingAddress.province,
         },
       });
-      console.log("Order created successfully:", order);
+      const sanitize_user = (order) => {
+        return {
+          product: order.Product,
+          quantity: order.quantity,
+          price: order.price,
+          paymentMethod: order.paymentMethod,
+        };
+      };
+
+      console.log("Order created successfully:", sanitize_user(order));
     } catch (error) {
       console.error("Error creating order:", error);
       return errorResponse(res, "Error creating order");
     }
   }
 
-  successResponse(res);
+  successResponse(res, "successfully Ordered !");
 };
