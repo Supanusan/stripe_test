@@ -14,11 +14,11 @@ configDotenv(); // load .env first
 const app = express();
 const port = process.env.PORT || 3000;
 
-// app.use(
-//   "/api/webhook",
-//   express.raw({ type: "application/json" }),
-//   handleWebhook,
-// );
+app.use(
+  "/api/webhook",
+  express.raw({ type: "application/json" }),
+  handleWebhook,
+);
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
