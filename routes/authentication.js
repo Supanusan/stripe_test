@@ -59,7 +59,7 @@ router.post(
     check("password", "Credentials not provided"),
   ],
   validate,
-  authLimiter,
+  // authLimiter,
   async (req, res) => {
     try {
       const { email, password } = req.body;

@@ -18,11 +18,10 @@ const orderSchema = new mongoose.Schema(
       default: "Pending",
     },
     paymentMethod: { type: String, enum: ["COD", "Online"], default: "COD" },
-    shippingAddress: {
-      street: String,
-      city: String,
-      province: String,
-    },
+
+    street: String,
+    city: String,
+    province: String,
   },
   { timestamps: true },
 );

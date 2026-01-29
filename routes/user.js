@@ -41,18 +41,8 @@ router.post(
   [
     // Validate items array
     check("items")
-      .isArray({ min: 1 })
-      .withMessage("Items must be an array with at least one product"),
-    // Validate each item
-    body("items.*.product")
       .notEmpty()
-      .withMessage("Product ID is required for each item"),
-    body("items.*.quantity")
-      .isInt({ min: 1 })
-      .withMessage("Quantity must be at least 1 for each item"),
-    body("items.*.price")
-      .isFloat({ min: 0 })
-      .withMessage("Price must be a positive number for each item"),
+      .withMessage("Items must be an array with at least one product"),
 
     // Validate totalAmount
     check("totalAmount")
@@ -66,21 +56,26 @@ router.post(
       .withMessage("Payment method must be either COD or Online"),
 
     // Validate shippingAddress
-    check("shippingAddress.street")
-      .notEmpty()
-      .withMessage("Street is required"),
-    check("shippingAddress.city").notEmpty().withMessage("City is required"),
-    check("shippingAddress.zip").notEmpty().withMessage("ZIP code is required"),
+    check("street").notEmpty().withMessage("Street is required"),
+    check("city").notEmpty().withMessage("City is required"),
+    check("province").notEmpty().withMessage("province is required"),
     validate,
   ],
   async (req, res) => {
     try {
       const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
-      const user = req.user?._id;
+      const user = req.user?.id;
       if (!user) return errorResponse(res, "User not found!");
 
-      const { item, totalAmount, paymentMethod, shippingAddress, count } =
-        req.body;
+      const {
+        items,
+        totalAmount,
+        paymentMethod,
+        street,
+        count,
+        city,
+        province,
+      } = req.body;
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
         line_items: [
@@ -88,10 +83,10 @@ router.post(
             price_data: {
               currency: "lkr",
               product_data: {
-                name: item.name,
-                images: [item.image],
+                name: items,
+                // images: [item.image],
               },
-              unit_amount: item.price * 100,
+              unit_amount: totalAmount * 100,
             },
             quantity: count,
           },
@@ -101,20 +96,14 @@ router.post(
         cancel_url: `${process.env.CLIENT_URL}/cancel`,
         metadata: {
           user,
-          item,
-          Amount,
+          items,
+          totalAmount,
           paymentMethod,
-          shippingAddress,
+          street,
           count,
+          city,
+          province,
         },
-      });
-
-      const order = await Order.create({
-        user,
-        item,
-        totalAmount,
-        paymentMethod,
-        shippingAddress,
       });
 
       return successResponse(res, session.url, "Order created successfully!");

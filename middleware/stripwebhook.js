@@ -25,16 +25,15 @@ export const handleWebhook = async (req, res) => {
       // Create order in database
       const order = await Order.create({
         user: session.metadata.user,
-        Product: session.metadata.item,
+        Product: session.metadata.items,
         quantity: session.metadata.count,
-        price: session.metadata.amount,
-        status,
+        price: session.metadata.totalAmount,
+        // status,
         paymentMethod,
-        shippingAddress: {
-          street: session.metadata.shippingAddress.street,
-          city: session.metadata.shippingAddress.city,
-          province: session.metadata.shippingAddress.province,
-        },
+
+        street: session.metadata.street,
+        city: session.metadata.city,
+        province: session.metadata.province,
       });
       const sanitize_user = (order) => {
         return {
@@ -45,7 +44,7 @@ export const handleWebhook = async (req, res) => {
         };
       };
 
-      console.log("Order created successfully:", sanitize_user(order));
+      console.log("Order created successfully ", sanitize_user(order));
     } catch (error) {
       console.error("Error creating order:", error);
       return errorResponse(res, "Error creating order");
