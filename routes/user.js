@@ -63,6 +63,7 @@ router.post(
   ],
   async (req, res) => {
     try {
+      console.log(req.body);
       const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
       const user = req.user?.id;
       if (!user) return errorResponse(res, "User not found!");
@@ -106,7 +107,7 @@ router.post(
         },
       });
 
-      return successResponse(res, session.url, "Order created successfully!");
+      successResponse(res, session.url, "Order created successfully!");
     } catch (error) {
       console.error(error);
       return errorResponse(res, "Something went wrong.");

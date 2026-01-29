@@ -6,6 +6,7 @@ export const authMiddleware = (req, res, next) => {
     const token =
       req.headers.authorization?.split(" ")[1] || req.cookies?.token;
 
+    // console.log(token);
     if (!token) {
       console.log("Token is not found");
       return errorResponse(res, "Token is not found", 401);
@@ -13,6 +14,7 @@ export const authMiddleware = (req, res, next) => {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
+    // console.log("noo error");
     next();
   } catch (error) {
     console.log(error.message);
