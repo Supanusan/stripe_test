@@ -6,7 +6,6 @@ import { Product } from "../models/shema/product.js";
 import { authMiddleware } from "../middleware/authmiddleware.js";
 import { Order } from "../models/shema/order.js";
 import Stripe from "stripe";
-import { User } from "../models/shema/user.js";
 
 const router = express.Router();
 
@@ -108,6 +107,16 @@ router.post(
           province,
         },
       });
+      // const order = await Order.create({
+      //   user: req.user.id,
+      //   product: items,
+      //   quantity: count,
+      //   price: totalAmount,
+      //   paymentMethod: paymentMethod,
+      //   street: street,
+      //   city: city,
+      //   province: province,
+      // });
       // console.log({
       //   metadata: {
       //     user: user_name,

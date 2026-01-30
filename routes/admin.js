@@ -11,7 +11,7 @@ const router = express.Router();
 // --- ADD PRODUCT --- (/add_product)
 router.post(
   "/add_product",
-  upload.single("image"),
+  // upload.single("image"),
   check("title").notEmpty().withMessage("Title required!"),
   check("description").notEmpty().withMessage("Description required!"),
   check("price").notEmpty().withMessage("Price required!"),
@@ -23,7 +23,7 @@ router.post(
       console.log(req.file);
       const { title, description, price, category, stock } = req.body;
 
-      if (!req.file) return errorResponse(res, "Image required!");
+      // if (!req.file) return errorResponse(res, "Image required!");
 
       const created = await Product.create({
         title,
@@ -31,7 +31,7 @@ router.post(
         price,
         category,
         stock,
-        images: [req.file.path],
+        // images: [req.file.path],
       });
 
       return successResponse(res, "Product successfully added!", created);
