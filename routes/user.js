@@ -6,6 +6,7 @@ import { Product } from "../models/shema/product.js";
 import { authMiddleware } from "../middleware/authmiddleware.js";
 import { Order } from "../models/shema/order.js";
 import Stripe from "stripe";
+import { User } from "../models/shema/user.js";
 
 const router = express.Router();
 
@@ -67,7 +68,9 @@ router.post(
       const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
       const user = req.user?.id;
       if (!user) return errorResponse(res, "User not found!");
-
+      var user_name = await User.findById("69746b83314f1deba1e542f5");
+      user_name = user_name.name;
+      // console.log(user_name);
       const {
         items,
         totalAmount,
@@ -96,7 +99,7 @@ router.post(
         success_url: `${process.env.CLIENT_URL}/success`,
         cancel_url: `${process.env.CLIENT_URL}/cancel`,
         metadata: {
-          user,
+          user: user_name,
           items,
           totalAmount,
           paymentMethod,
@@ -106,7 +109,18 @@ router.post(
           province,
         },
       });
-
+      // console.log({
+      //   metadata: {
+      //     user: user_name,
+      //     items,
+      //     totalAmount,
+      //     paymentMethod,
+      //     street,
+      //     count,
+      //     city,
+      //     province,
+      //   },
+      // });
       successResponse(res, session.url, "Order created successfully!");
     } catch (error) {
       console.error(error);
