@@ -107,28 +107,7 @@ router.post(
           province,
         },
       });
-      // const order = await Order.create({
-      //   user: req.user.id,
-      //   product: items,
-      //   quantity: count,
-      //   price: totalAmount,
-      //   paymentMethod: paymentMethod,
-      //   street: street,
-      //   city: city,
-      //   province: province,
-      // });
-      // console.log({
-      //   metadata: {
-      //     user: user_name,
-      //     items,
-      //     totalAmount,
-      //     paymentMethod,
-      //     street,
-      //     count,
-      //     city,
-      //     province,
-      //   },
-      // });
+      console.log("Order created successfully!");
       successResponse(res, session.url, "Order created successfully!");
     } catch (error) {
       console.error(error);

@@ -7,18 +7,17 @@ import authRoutes from "./routes/authentication.js";
 import cors from "cors";
 import adminRoutes from "./routes/admin.js";
 import userRoutes from "./routes/user.js";
-import testRoute from "./routes/test.js";
 import { handleWebhook } from "./middleware/stripwebhook.js";
 
 configDotenv(); // load .env first
 const app = express();
-const port = process.env.PORT || 3000;
-
 app.post(
   "/api/webhook",
   express.raw({ type: "application/json" }),
   handleWebhook,
 );
+const port = process.env.PORT || 3000;
+
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -41,7 +40,6 @@ app.use("/api/admin", adminMiddleware, adminRoutes);
 //auth route
 app.use("/api/auth", authRoutes);
 
-app.use("/api", testRoute);
 // Start server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

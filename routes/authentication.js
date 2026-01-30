@@ -2,7 +2,6 @@
 
 import express from "express";
 import { errorResponse, successResponse } from "../utils/responseHelper.js";
-import { authLimiter } from "../middleware/rateLimiter.js";
 import { User } from "../models/shema/user.js";
 import { comparePassword, hashPassword } from "../utils/passwordHelper.js";
 import jwt from "jsonwebtoken";
@@ -20,7 +19,7 @@ router.post(
     check("phone", "Tel No not provided"),
   ],
   validate,
-  authLimiter,
+
   async (req, res) => {
     try {
       const { email, password, name, phone } = req.body;
