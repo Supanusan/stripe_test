@@ -63,7 +63,7 @@ router.post(
   ],
   async (req, res) => {
     try {
-      console.log(req.body);
+      console.log(req.body, ` \n user.id is : ${req.user.id}`);
       const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
       const user = req.user?.id;
       if (!user) return errorResponse(res, "User not found!");

@@ -5,6 +5,7 @@ import { successResponse, errorResponse } from "../utils/responseHelper.js";
 export const handleWebhook = async (req, res) => {
   const sig = req.headers["stripe-signature"];
   let event;
+  console.log("Running the webhook");
 
   try {
     event = stripe.webhooks.constructEvent(
