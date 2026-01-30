@@ -23,14 +23,14 @@ export const handleWebhook = async (req, res) => {
 
     try {
       const order = await Order.create({
-        user: req.user.id,
-        product: items,
-        quantity: count,
-        price: totalAmount,
-        paymentMethod: paymentMethod,
-        street: street,
-        city: city,
-        province: province,
+        user: session.metadata.user,
+        product: session.metadata.items,
+        quantity: session.metadata.count,
+        price: session.metadata.totalAmount,
+        paymentMethod: session.metadata.paymentMethod,
+        street: session.metadata.street,
+        city: session.metadata.city,
+        province: session.metadata.province,
       });
 
       console.log("Order created successfully:", {
