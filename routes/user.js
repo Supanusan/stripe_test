@@ -68,8 +68,7 @@ router.post(
       const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
       const user = req.user?.id;
       if (!user) return errorResponse(res, "User not found!");
-      var user_name = await User.findById("69746b83314f1deba1e542f5");
-      user_name = user_name.name;
+
       // console.log(user_name);
       const {
         items,
@@ -99,7 +98,7 @@ router.post(
         success_url: `${process.env.CLIENT_URL}/success`,
         cancel_url: `${process.env.CLIENT_URL}/cancel`,
         metadata: {
-          user: user_name,
+          user,
           items,
           totalAmount,
           paymentMethod,
