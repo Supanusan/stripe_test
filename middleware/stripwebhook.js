@@ -1,6 +1,6 @@
 import stripe from "../config/stripe.js";
 import { Order } from "../models/shema/order.js";
-import { successResponse } from "../utils/responseHelper.js";
+import { successResponse, errorResponse } from "../utils/responseHelper.js";
 
 export const handleWebhook = async (req, res) => {
   const sig = req.headers["stripe-signature"];
@@ -17,39 +17,43 @@ export const handleWebhook = async (req, res) => {
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
-  // Handle successful payment
   if (event.type === "checkout.session.completed") {
     const session = event.data.object;
 
     try {
-      // Create order in database
       const order = await Order.create({
         user: session.metadata.user,
         Product: session.metadata.items,
         quantity: session.metadata.count,
         price: session.metadata.totalAmount,
-        // status,
-        paymentMethod,
-
+        paymentMethod: session.metadata.paymentMethod,
         street: session.metadata.street,
         city: session.metadata.city,
         province: session.metadata.province,
       });
-      const sanitize_user = (order) => {
-        return {
-          product: order.Product,
+
+      console.log("Order created successfully:", {
+        product: order.product,
+        quantity: order.quantity,
+        price: order.price,
+        paymentMethod: order.paymentMethod,
+      });
+      successResponse(
+        res,
+        {
+          product: order.product,
           quantity: order.quantity,
           price: order.price,
           paymentMethod: order.paymentMethod,
-        };
-      };
-
-      console.log("Order created successfully ", sanitize_user(order));
+        },
+        "Order created successfully:",
+      );
     } catch (error) {
       console.error("Error creating order:", error);
       return errorResponse(res, "Error creating order");
     }
   }
 
-  successResponse(res, "successfully Ordered !");
+  // Respond with 200 to Stripe
+  res.status(200).send("Webhook received successfully!");
 };
